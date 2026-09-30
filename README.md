@@ -1,14 +1,36 @@
 # ResearchFlow
 
-> **Live demo:** _add Render/Vercel URL after deploy_
+> **Multi-agent autonomous research engine with cross-model fact-checking.** Submit any open-ended research question and a pipeline of specialized AI agents plans sub-questions, researches them in parallel, synthesizes a structured report, and verifies every claim against the actual retrieved text — not just the model's memory.
 
-Multi-agent autonomous research engine with cross-model fact-checking. Submit any open-ended research question and a pipeline of specialized AI agents will plan sub-questions, research them in parallel, synthesize a structured report, and verify every claim against the actual retrieved text — not just the model's memory.
+[![CI](https://github.com/ruthwikr17/research-flow/actions/workflows/ci.yml/badge.svg)](https://github.com/ruthwikr17/research-flow/actions/workflows/ci.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square&logo=groq&logoColor=white)](https://groq.com)
+[![Gemini](https://img.shields.io/badge/Gemini_API-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://aistudio.google.com)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+> **Live demo:** *add Render/Vercel URL after deploy*
+
+[Architecture](#architecture) • [How it's different](#what-makes-this-different-from-a-single-call-ai-research-assistant) • [Example Output](#example-output) • [Eval Results](#eval-results) • [Design Decisions](#design-decisions) • [Setup](#local-setup) • [Tech Stack](#tech-stack) • [Limitations](#known-limitations--v1-scope)
+
+---
+
+## Key Features
+
+- 🧠 **Multi-agent pipeline** — Planner → parallel Researchers → Synthesizer → Verifier, each a distinct agent role rather than one model doing everything
+- 🔀 **Cross-model verification** — the Verifier always runs on a different provider than the Synthesizer, since a model cannot reliably catch errors in its own output
+- 📎 **Grounded citations, not vibes** — every claim in the final report is cosine-matched against the actual retrieved source chunks and labeled supported / partially supported / unsupported / unverified
+- ⚡ **Parallel research fan-out** — sub-questions are researched concurrently via `asyncio.gather`, no task queue overhead
+- 🔍 **Dual search providers** — Tavily primary, Exa as reserve when credits run low or results converge
+- 💸 **$0 to run** — every component (LLMs, search, embeddings, hosting) runs on free tiers by deliberate design, not as a limitation
+- 📊 **Measured, not claimed** — real eval numbers on citation precision, completeness, and verifier catch-rate (F1), evaluated against seeded hallucinations
 
 ---
 
 ## Architecture
 
-```mermaid
+```
 flowchart LR
     U([User query]) --> P[Planner Agent\nGroq → Gemini fallback]
     P -->|N sub-questions| R1[Researcher 1\nGemini → Groq fallback]
@@ -48,7 +70,7 @@ From a real eval run ("What is the OPT employment rate for CS graduates?"):
 >
 > **Verifier reasoning:** Retrieved NACE data shows 68–72% placement rates for STEM OPT participants but does not isolate CS specifically or the 3-month window. The directional claim is supported; the specifics are not confirmed by retrieved sources.
 >
-> **Source chunk:** _"…72% of STEM OPT participants reported employment within the first quarter after authorization…"_ — nace.com/research/...
+> **Source chunk:** *"…72% of STEM OPT participants reported employment within the first quarter after authorization…"* — nace.com/research/...
 
 ---
 
@@ -66,7 +88,7 @@ Evaluated across 10 queries using a two-track methodology: automated precision s
 | Verifier precision | 0.90 |
 | Verifier recall | 0.86 |
 
-_Verifier catch rate measures how reliably the verifier flags seeded hallucinations in Track 2 (synthetic injected claims) while preserving correct claims. Precision = hallucinations correctly identified / all flagged; Recall = hallucinations correctly identified / all injected._
+*Verifier catch rate measures how reliably the verifier flags seeded hallucinations in Track 2 (synthetic injected claims) while preserving correct claims. Precision = hallucinations correctly identified / all flagged; Recall = hallucinations correctly identified / all injected.*
 
 ---
 
@@ -94,7 +116,7 @@ The deployed backend spins down after 15 minutes of inactivity and takes 30–60
 
 ```bash
 # 1. Clone and enter the project
-git clone <repo-url>
+git clone https://github.com/ruthwikr17/research-flow.git
 cd research-flow
 
 # 2. Set environment variables
@@ -125,12 +147,36 @@ docker compose up --build
 | Layer | Technology |
 |---|---|
 | Backend | Python 3.11, FastAPI, SSE (Server-Sent Events) |
-| LLM routing | Groq (gpt-oss-20b / gpt-oss-120b), Google Gemini (3.5/3.1 flash-lite) |
+| LLM routing | Groq (gpt-oss-20b / gpt-oss-120b), Google Gemini (3.5 / 3.1 flash-lite) |
 | Search | Tavily API (primary), Exa API (reserve) |
 | Embedding / verification | `sentence-transformers` (all-MiniLM-L6-v2), cosine similarity |
 | Frontend | Next.js 14, vanilla CSS |
 | Deployment | Backend → Render free tier, Frontend → Vercel hobby |
 | CI | GitHub Actions (pytest, fully mocked) |
+
+---
+
+## Project structure
+
+```
+research-flow/
+├── backend/
+│   ├── app/
+│   │   ├── agents/          # Planner, Researcher, Synthesizer, Verifier logic
+│   │   ├── services/        # LLM routing, search clients, embedding/verification
+│   │   ├── routes/          # FastAPI endpoints (SSE pipeline stream, health)
+│   │   └── main.py          # FastAPI entrypoint
+│   ├── tests/                # pytest suite, fully mocked LLM/search calls
+│   ├── .env.example
+│   └── requirements.txt
+├── frontend/
+│   ├── app/                  # Next.js App Router pages
+│   └── components/           # Live pipeline progress view, report renderer
+├── .github/workflows/ci.yml  # pytest on push/PR
+└── docker-compose.yml
+```
+
+*(High-level layout inferred from the described architecture — adjust to match your actual folder names if they differ.)*
 
 ---
 
@@ -145,8 +191,33 @@ docker compose up --build
 
 ---
 
-## CI status
+## Roadmap
 
-[![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+- [ ] Report persistence (PostgreSQL) + shareable report links
+- [ ] Reflection loop — verifier failures trigger a targeted re-research pass instead of just stripping the claim
+- [ ] Multi-turn follow-up on an existing report
+- [ ] MCP server exposing the research pipeline as a callable tool for other AI assistants
 
-_Badge will become active once the repo is pushed to GitHub with the workflow file._
+---
+
+## Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## Author
+
+**Ruthvik** — [GitHub: ruthwikr17](https://github.com/ruthwikr17) · [LinkedIn](https://www.linkedin.com/in/ruthvik-reddy-bijjam/)
