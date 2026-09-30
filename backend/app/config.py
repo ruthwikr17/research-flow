@@ -1,6 +1,7 @@
 from functools import lru_cache
+from typing import Any
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -27,6 +28,32 @@ class Settings(BaseSettings):
     pipeline_timeout_seconds: int = 120
     max_queries_per_day: int = 30
     frontend_origins: str = "http://localhost:3000"
+
+    @model_validator(mode="before")
+    @classmethod
+    def coerce_empty_strings_to_none(cls, data: Any) -> Any:
+        """Convert empty-string env vars to None so field defaults apply.
+
+        Render (and other PaaS platforms) sometimes write env vars as empty strings
+        when a value is left blank in the dashboard.  Pydantic cannot coerce '' to int
+        even when a default is set, so we normalise them here before field validation.
+        """
+        if not isinstance(data, dict):
+            return data
+        # Fields where an empty string should fall back to the field default.
+        int_fields_with_defaults = {
+            "tavily_monthly_credit_limit",
+            "exa_monthly_credit_budget",
+            "max_concurrent_researchers",
+            "max_search_attempts_per_researcher",
+            "max_results_per_search_call",
+            "pipeline_timeout_seconds",
+            "max_queries_per_day",
+        }
+        for field_name in int_fields_with_defaults:
+            if data.get(field_name) == "":
+                data.pop(field_name)
+        return data
 
     @field_validator("gemini_models", mode="after")
     @classmethod
