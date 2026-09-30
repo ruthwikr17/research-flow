@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     # Number of results fetched per individual search() call
     max_results_per_search_call: int = 5
     pipeline_timeout_seconds: int = 300
+    max_concurrent_pipelines: int = 1
     max_queries_per_day: int = 30
     frontend_origins: str = "http://localhost:3000"
 
@@ -48,6 +49,7 @@ class Settings(BaseSettings):
             "max_search_attempts_per_researcher",
             "max_results_per_search_call",
             "pipeline_timeout_seconds",
+            "max_concurrent_pipelines",
             "max_queries_per_day",
         }
         for field_name in int_fields_with_defaults:

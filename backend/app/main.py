@@ -52,6 +52,7 @@ async def lifespan(app: FastAPI):
             VerifierAgent(llm_router, embed_service),
             max_concurrent_researchers=settings.max_concurrent_researchers,
             timeout_seconds=settings.pipeline_timeout_seconds,
+            max_concurrent_pipelines=settings.max_concurrent_pipelines,
         ),
     )
     yield

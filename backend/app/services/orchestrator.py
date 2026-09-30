@@ -13,21 +13,23 @@ ProgressCallback = Callable[[str, dict[str, Any]], None]
 
 
 class ResearchOrchestrator:
-    def __init__(self, planner: Any, researcher_factory: Callable[[], Any], synthesizer: Any, verifier: Any | None = None, max_concurrent_researchers: int = 4, timeout_seconds: float = 120) -> None:
+    def __init__(self, planner: Any, researcher_factory: Callable[[], Any], synthesizer: Any, verifier: Any | None = None, max_concurrent_researchers: int = 4, timeout_seconds: float = 300, max_concurrent_pipelines: int = 1) -> None:
         self.planner = planner
         self.researcher_factory = researcher_factory
         self.synthesizer = synthesizer
         self.verifier = verifier
         self.max_concurrent_researchers = max_concurrent_researchers
         self.timeout_seconds = timeout_seconds
+        self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pipelines)
 
     async def run_pipeline(self, query: str, on_progress: ProgressCallback | None = None) -> DraftReport | VerifiedReport:
-        try:
-            return await asyncio.wait_for(self._run(query, on_progress), timeout=self.timeout_seconds)
-        except Exception as exc:
-            logger.exception("Pipeline failed in run_pipeline: %s", exc)
-            self._emit(on_progress, "error", {"message": f"Pipeline failed: {str(exc)}"})
-            raise
+        async with self.pipeline_semaphore:
+            try:
+                return await asyncio.wait_for(self._run(query, on_progress), timeout=self.timeout_seconds)
+            except Exception as exc:
+                logger.exception("Pipeline failed in run_pipeline: %s", exc)
+                self._emit(on_progress, "error", {"message": f"Pipeline failed: {str(exc)}"})
+                raise
 
     async def _run(self, query: str, on_progress: ProgressCallback | None) -> DraftReport | VerifiedReport:
         import time

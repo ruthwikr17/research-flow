@@ -29,7 +29,23 @@ export default function Home() {
     }
   };
 
+  const eventSourceRef = useRef<EventSource | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
+    };
+  }, []);
+
   const startResearch = (query: string) => {
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+      eventSourceRef.current = null;
+    }
+
     setStage("planning");
     setDetail(null);
     setReport(null);
@@ -42,6 +58,7 @@ export default function Home() {
     }, COLD_START_TIMEOUT_MS);
 
     const eventSource = new EventSource(`${BACKEND_URL}/research/stream?query=${encodeURIComponent(query)}`);
+    eventSourceRef.current = eventSource;
 
     eventSource.onmessage = (event) => {
       clearColdStart(); // first message proves the backend is awake
@@ -51,6 +68,7 @@ export default function Home() {
           setStage("error");
           setErrorMsg(data.detail?.message || "Research pipeline encountered an error.");
           eventSource.close();
+          eventSourceRef.current = null;
           setRefreshUsage((prev) => prev + 1);
         } else if (data.stage === "done") {
           console.log("[ResearchFlow] SSE 'done' received raw payload:", data);
@@ -60,6 +78,7 @@ export default function Home() {
           setDetail(data.detail);
           setReport(reportPayload);
           eventSource.close();
+          eventSourceRef.current = null;
           setRefreshUsage((prev) => prev + 1);
         } else {
           setStage(data.stage);
@@ -75,6 +94,7 @@ export default function Home() {
       setStage("error");
       setErrorMsg("Connection to backend lost or request failed.");
       eventSource.close();
+      eventSourceRef.current = null;
       setRefreshUsage((prev) => prev + 1);
     };
   };

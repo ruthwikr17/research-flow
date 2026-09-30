@@ -14,6 +14,7 @@ from app.schemas.verification import VerifiedReport
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/research", tags=["research"])
+_active_queries: set[str] = set()
 
 
 class PlanRequest(BaseModel):
@@ -42,6 +43,13 @@ async def run_research(payload: PlanRequest, request: Request) -> VerifiedReport
 
 @router.get("/stream")
 async def stream_research(request: Request, query: str = Query(..., min_length=1)) -> StreamingResponse:
+    query_key = query.strip().lower()
+    if query_key in _active_queries:
+        async def duplicate_event_generator():
+            payload = json.dumps({"stage": "error", "detail": {"message": "A research pipeline is already in progress for this query. Please wait."}})
+            yield f"data: {payload}\n\n"
+        return StreamingResponse(duplicate_event_generator(), media_type="text/event-stream")
+
     rate_limiter = request.app.state.services.rate_limiter
     if not rate_limiter.check_and_increment():
         async def rate_limit_event_generator():
@@ -49,6 +57,7 @@ async def stream_research(request: Request, query: str = Query(..., min_length=1
             yield f"data: {payload}\n\n"
         return StreamingResponse(rate_limit_event_generator(), media_type="text/event-stream")
 
+    _active_queries.add(query_key)
     queue: asyncio.Queue[tuple[str, dict]] = asyncio.Queue()
 
     def on_progress(stage: str, detail: dict) -> None:
@@ -90,6 +99,8 @@ async def stream_research(request: Request, query: str = Query(..., min_length=1
             logger.exception("Error in SSE event generator: %s", exc)
             payload = json.dumps({"stage": "error", "detail": {"message": f"Unexpected server error: {str(exc)}"}})
             yield f"data: {payload}\n\n"
+        finally:
+            _active_queries.discard(query_key)
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 

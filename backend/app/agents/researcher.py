@@ -167,7 +167,7 @@ class ResearcherAgent(AgentBase):
                 Source(
                     **source.model_dump(),
                     search_provider=result.provider,
-                    full_content=content_by_url.get(source.url, ""),
+                    full_content=(content_by_url.get(source.url, "") or "")[:8000],
                 )
             )
 
