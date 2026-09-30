@@ -68,7 +68,9 @@ class VerifierAgent(AgentBase):
     def _chunks_by_source(self, report: DraftReport) -> dict[str, list[Chunk]]:
         chunks: dict[str, list[Chunk]] = {}
         for source in report.all_sources:
-            chunks[source.url] = [Chunk(chunk_id=f"{source.url}#{index}", source_url=source.url, text=text) for index, text in enumerate(chunk_text(source.full_content))]
+            # Truncate content to max 3000 chars to avoid memory issues on free-tier containers
+            content_snippet = (source.full_content or "")[:3000]
+            chunks[source.url] = [Chunk(chunk_id=f"{source.url}#{index}", source_url=source.url, text=text) for index, text in enumerate(chunk_text(content_snippet))]
         return chunks
 
     def _embed_chunks(self, chunks_by_url: dict[str, list[Chunk]]) -> dict[str, np.ndarray]:

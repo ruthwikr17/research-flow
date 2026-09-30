@@ -30,6 +30,9 @@ class SynthesizerOutput(BaseModel):
 
 
 class SynthesizerAgent(AgentBase):
+    def __init__(self, llm_router, timeout_seconds: float = 90.0, **kwargs) -> None:
+        super().__init__(llm_router, timeout_seconds=timeout_seconds, **kwargs)
+
     def synthesize(self, original_query: str, mini_briefs: list[MiniBrief]) -> DraftReport:
         all_sources = self._deduplicate_sources(mini_briefs)
         output = self.call_structured("synthesizer", [{"role": "system", "content": SYNTHESIZER_SYSTEM_PROMPT}, {"role": "user", "content": f"Original query: {original_query}\n\nMini-briefs:\n{json.dumps([brief.model_dump() for brief in mini_briefs])}"}], SynthesizerOutput)
