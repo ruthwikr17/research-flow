@@ -78,12 +78,13 @@ async def stream_research(request: Request, query: str = Query(..., min_length=1
                 except asyncio.TimeoutError:
                     continue
 
-            # Ensure any exception in the pipeline task is handled
-            if pipeline_task.exception():
+            # Ensure any exception in the pipeline task is sent as an error event
+            if pipeline_task.done() and not pipeline_task.cancelled():
                 exc = pipeline_task.exception()
-                logger.exception("Pipeline task error in stream: %s", exc)
-                payload = json.dumps({"stage": "error", "detail": {"message": f"Pipeline failed: {str(exc)}"}})
-                yield f"data: {payload}\n\n"
+                if exc:
+                    logger.exception("Pipeline task error in stream: %s", exc)
+                    payload = json.dumps({"stage": "error", "detail": {"message": f"Pipeline failed: {str(exc)}"}})
+                    yield f"data: {payload}\n\n"
 
         except Exception as exc:
             logger.exception("Error in SSE event generator: %s", exc)
