@@ -1,0 +1,242 @@
+[
+  {
+    "id": "q01",
+    "query": "What are the main approaches to reducing LLM hallucination in production systems?",
+    "expected_angles": [
+      "retrieval-augmented generation / grounding",
+      "fine-tuning / RLHF approaches",
+      "output verification / fact-checking layers",
+      "prompt engineering techniques"
+    ],
+    "expected_facts": [
+      {
+        "fact": "RAG reduces hallucination by grounding generation in retrieved documents",
+        "notes": "should appear in some form if sources on this topic were found"
+      }
+    ]
+  },
+  {
+    "id": "q02",
+    "query": "What are the key trade-offs between monolithic and microservice software architectures?",
+    "expected_angles": [
+      "deployment and CI/CD complexity",
+      "operational and network overhead",
+      "team autonomy and organization boundaries",
+      "scalability and resource isolation"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Microservices introduce distributed system complexity and latency over internal network calls",
+        "notes": "standard architecture consensus"
+      }
+    ]
+  },
+  {
+    "id": "q03",
+    "query": "How do solid-state batteries compare with conventional lithium-ion batteries for electric vehicles?",
+    "expected_angles": [
+      "energy density and driving range",
+      "safety and thermal runaway risk",
+      "manufacturing costs and scaling hurdles",
+      "commercialization timeline"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Solid-state batteries offer higher energy density and reduced fire hazard but face high mass-production costs",
+        "notes": "core technical distinction"
+      }
+    ]
+  },
+  {
+    "id": "q04",
+    "query": "What are the primary mechanisms driving global ocean acidification and its impact on marine ecosystems?",
+    "expected_angles": [
+      "atmospheric carbon dioxide absorption",
+      "carbonate chemistry and pH decline",
+      "calcifying organism shell dissolution",
+      "food web disruption"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Absorbed CO2 reacts with seawater forming carbonic acid, lowering ocean pH",
+        "notes": "fundamental chemical mechanism"
+      }
+    ]
+  },
+  {
+    "id": "q05",
+    "query": "Is remote work beneficial or harmful for software engineering productivity?",
+    "expected_angles": [
+      "deep work and focus time benefits",
+      "communication latency and onboarding challenges",
+      "developer retention and job satisfaction",
+      "conflicting empirical productivity metrics"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Studies show mixed results depending on asynchronous documentation quality and team communication overhead",
+        "notes": "tensions/disagreements present"
+      }
+    ]
+  },
+  {
+    "id": "q06",
+    "query": "What caused the 2008 global financial crisis?",
+    "expected_angles": [
+      "subprime mortgage lending defaults",
+      "securitization and mortgage-backed securities",
+      "regulatory failure and rating agency misalignment",
+      "liquidity contagion across global investment banks"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Collapse of subprime mortgage backed securities triggered liquidity crises at major financial institutions",
+        "notes": "well-documented economic event"
+      }
+    ]
+  },
+  {
+    "id": "q07",
+    "query": "Should software developers use Rust over C++ for new system-level programming projects?",
+    "expected_angles": [
+      "compile-time memory safety guarantees",
+      "ecosystem maturity and library availability",
+      "developer learning curve and build times",
+      "interoperability with legacy C/C++ codebases"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Rust eliminates data races and memory corruption at compile time without garbage collection",
+        "notes": "central comparison theme"
+      }
+    ]
+  },
+  {
+    "id": "q08",
+    "query": "What are the latest economic impacts of deep sea mining in international waters?",
+    "expected_angles": [
+      "critical mineral supply for EV batteries",
+      "benthic ecosystem destruction and biodiversity loss",
+      "International Seabed Authority regulatory status",
+      "commercial viability vs environmental opposition"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Polymetallic nodules contain nickel and cobalt but mining poses severe deep-sea biodiversity risks",
+        "notes": "active global policy debate"
+      }
+    ]
+  },
+  {
+    "id": "q09",
+    "query": "How does quantum key distribution (QKD) compare to post-quantum cryptography (PQC) for secure communication?",
+    "expected_angles": [
+      "hardware dependence and specialized fiber infrastructure",
+      "mathematical hardness assumptions vs physics guarantees",
+      "deployment cost and scalability",
+      "NIST standardization standards"
+    ],
+    "expected_facts": [
+      {
+        "fact": "PQC relies on hard math problems on classical hardware, whereas QKD requires specialized quantum optics",
+        "notes": "technical contrast"
+      }
+    ]
+  },
+  {
+    "id": "q10",
+    "query": "What are the primary factors causing honeybee colony collapse disorder?",
+    "expected_angles": [
+      "neonicotinoid pesticide exposure",
+      "varroa destructor mite infestations",
+      "habitat loss and nutritional stress",
+      "pathogens and viral synergistic effects"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Colony collapse disorder stems from multiple compounding stresses rather than a single isolated cause",
+        "notes": "multi-factorial scientific consensus"
+      }
+    ]
+  },
+  {
+    "id": "q11",
+    "query": "Will nuclear fusion provide commercial grid power before 2040?",
+    "expected_angles": [
+      "magnetic confinement (tokamaks) vs inertial confinement",
+      "net energy gain Q-factor achievements",
+      "materials science and plasma stability engineering",
+      "commercial timeline predictions by industry experts"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Achieving net energy gain in experiments differs significantly from economic grid-scale continuous power generation",
+        "notes": "tensions/timeline uncertainty"
+      }
+    ]
+  },
+  {
+    "id": "q12",
+    "query": "What are the environmental and socioeconomic consequences of palm oil cultivation in Southeast Asia?",
+    "expected_angles": [
+      "deforestation and peatland carbon release",
+      "endangered species habitat destruction",
+      "smallholder farmer economic livelihoods",
+      "sustainable certification initiatives (RSPO)"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Palm oil yields high oil per hectare but clearing tropical rainforests releases vast carbon reserves",
+        "notes": "environmental trade-off"
+      }
+    ]
+  },
+  {
+    "id": "q13",
+    "query": "What is the efficacy of mRNA vaccines compared to traditional inactivated viral vector vaccines?",
+    "expected_angles": [
+      "mechanism of antigen presentation",
+      "speed of vaccine development and adaptation",
+      "cold-chain storage and logistics constraints",
+      "durability of immune response and booster needs"
+    ],
+    "expected_facts": [
+      {
+        "fact": "mRNA vaccines enable rapid synthetic sequence targeting but require ultra-cold storage conditions",
+        "notes": "biomedical comparison"
+      }
+    ]
+  },
+  {
+    "id": "q14",
+    "query": "What are the specific economic metrics for 2026 hyperscale AI data center energy demands?",
+    "expected_angles": [
+      "gigawatt power capacity bottlenecks",
+      "nuclear and renewable energy PPA adoption",
+      "cooling infrastructure and water consumption",
+      "grid interconnection queue delays"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Hyperscale AI clusters demand unprecedented continuous baseline power, causing grid queue delays",
+        "notes": "potential thin search source query"
+      }
+    ]
+  },
+  {
+    "id": "q15",
+    "query": "How do WebAssembly (Wasm) runtimes impact serverless edge computing performance?",
+    "expected_angles": [
+      "near-zero cold start overhead",
+      "memory sandboxing and security boundary",
+      "language portability and compilation targets",
+      "system interface (WASI) maturity"
+    ],
+    "expected_facts": [
+      {
+        "fact": "Wasm modules start in microseconds compared to millisecond container cold starts",
+        "notes": "performance comparison"
+      }
+    ]
+  }
+]

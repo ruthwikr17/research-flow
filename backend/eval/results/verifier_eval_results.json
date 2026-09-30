@@ -1,0 +1,20 @@
+[
+  {
+    "id": "v01",
+    "claim": "Retrieval-augmented generation eliminates 100% of hallucinations across all neural network architectures.",
+    "chunk_text": "In our benchmarks across open-domain QA tasks, RAG reduced hallucination rates from 28% to under 6%, though it did not eliminate errors entirely.",
+    "ground_truth": "unsupported",
+    "predicted": "supported",
+    "confidence": 0.95,
+    "reasoning": "Direct match."
+  },
+  {
+    "id": "v02",
+    "claim": "RAG reduces factual error rates in medical QA benchmarks.",
+    "chunk_text": "Evaluating RAG on medical QA datasets demonstrated a statistically significant reduction in factual error rates compared to ungrounded baselines.",
+    "ground_truth": "supported",
+    "predicted": "supported",
+    "confidence": 0.95,
+    "reasoning": "Direct match."
+  }
+]

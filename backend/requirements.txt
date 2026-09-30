@@ -1,0 +1,10 @@
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+pydantic-settings==2.8.1
+httpx==0.28.1
+groq==0.20.0
+google-genai==1.7.0
+sentence-transformers==3.4.1
+numpy==2.2.3
+pytest==8.3.5
+

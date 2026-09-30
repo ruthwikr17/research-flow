@@ -1,0 +1,177 @@
+[
+  {
+    "id": "v01",
+    "claim": "Retrieval-augmented generation eliminates 100% of hallucinations across all neural network architectures.",
+    "chunk_text": "In our benchmarks across open-domain QA tasks, RAG reduced hallucination rates from 28% to under 6%, though it did not eliminate errors entirely.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "The claim asserts 100% elimination across all architectures, which directly contradicts the source text stating errors were not eliminated entirely."
+  },
+  {
+    "id": "v02",
+    "claim": "RAG reduces factual error rates in medical QA benchmarks.",
+    "chunk_text": "Evaluating RAG on medical QA datasets demonstrated a statistically significant reduction in factual error rates compared to ungrounded baselines.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "The chunk directly supports that RAG reduces factual error rates in medical QA."
+  },
+  {
+    "id": "v03",
+    "claim": "Solid-state batteries double EV driving range across all weather conditions.",
+    "chunk_text": "Early lab prototypes of solid-state cells achieved 350 Wh/kg energy density, representing a 40% increase over standard lithium-ion cells at room temperature.",
+    "ground_truth_verdict": "partially_supported",
+    "reasoning": "The claim overstates a 40% energy density increase in lab prototypes into 'doubling EV driving range across all weather conditions'."
+  },
+  {
+    "id": "v04",
+    "claim": "Rust guarantees compile-time memory safety without garbage collection.",
+    "chunk_text": "Through its ownership system and lifetime checks, Rust provides compile-time memory safety without relying on a runtime garbage collector.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Direct verbatim support for compile-time memory safety without GC."
+  },
+  {
+    "id": "v05",
+    "claim": "Python 3.12 runs 10x faster than C++ in matrix multiplication.",
+    "chunk_text": "Python 3.12 introduced specialized adaptive interpreter ops yielding a 10-15% performance improvement over Python 3.11 on standard benchmarks.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "The claim falsely claims Python is 10x faster than C++, whereas the source text only mentions a 10-15% improvement over Python 3.11."
+  },
+  {
+    "id": "v06",
+    "claim": "Neonicotinoid pesticides reduce honeybee foraging efficiency.",
+    "chunk_text": "Field observations confirmed that sublethal exposure to neonicotinoids impairs navigational memory and foraging efficiency in honeybee colonies.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by the chunk text."
+  },
+  {
+    "id": "v07",
+    "claim": "Post-quantum cryptography requires specialized hardware optics to transmit keys.",
+    "chunk_text": "Post-quantum algorithms rely on lattice-based mathematical hardness and run on existing classical hardware, unlike QKD which requires photon detectors.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "The claim confuses post-quantum cryptography with QKD hardware requirements."
+  },
+  {
+    "id": "v08",
+    "claim": "Ocean acidification lowers seawater pH due to dissolved carbon dioxide.",
+    "chunk_text": "As oceans absorb anthropogenic CO2, chemical reactions produce carbonic acid, incrementally reducing surface seawater pH levels.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by seawater pH chemical reactions text."
+  },
+  {
+    "id": "v09",
+    "claim": "Microservices completely eliminate production software bugs.",
+    "chunk_text": "Microservices decouple deployment units allowing independent team velocity, though network boundaries introduce new failure modes.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "The claim falsely claims elimination of all bugs, whereas microservices introduce new network failure modes."
+  },
+  {
+    "id": "v10",
+    "claim": "WebAssembly modules achieve cold start times under 1 millisecond.",
+    "chunk_text": "Measuring edge runtime initialization showed WebAssembly instance instantiation consistently completed in 150 to 450 microseconds.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Microsecond instantiation times directly support the sub-millisecond claim."
+  },
+  {
+    "id": "v11",
+    "claim": "Global commercial nuclear fusion power was achieved in 2015.",
+    "chunk_text": "In December 2022, researchers at NIF achieved net energy gain for the first time, though commercial grid fusion remains decades away.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "Contradicts the chunk text which notes net energy gain was achieved in 2022 and commercial grid fusion is decades away."
+  },
+  {
+    "id": "v12",
+    "claim": "Deep-sea mining risks disrupting benthic ocean ecosystems.",
+    "chunk_text": "Extracting polymetallic seabed nodules causes physical habitat destruction and sediment plumes that endanger benthic biodiversity.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by benthic habitat destruction mention."
+  },
+  {
+    "id": "v13",
+    "claim": "mRNA vaccines can be stored indefinitely at ambient room temperature.",
+    "chunk_text": "Because lipid nanoparticles degrade quickly at warmer temperatures, mRNA formulations require ultra-cold freezer chains during transit.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "Directly contradicts the ultra-cold storage requirement in the source."
+  },
+  {
+    "id": "v14",
+    "claim": "Remote work increases software developer deep work hours.",
+    "chunk_text": "Surveys indicated developers working remotely reported a 25% increase in uninterrupted focus blocks, though synchronous collaboration declined.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Supported by reported increase in uninterrupted focus blocks."
+  },
+  {
+    "id": "v15",
+    "claim": "The 2008 financial crisis was triggered by collapse in agricultural commodities.",
+    "chunk_text": "Broad defaults in subprime residential mortgages led to systemic insolvencies across major investment banks in 2008.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "The claim falsely attributes the crisis trigger to agricultural commodities instead of subprime residential mortgages."
+  },
+  {
+    "id": "v16",
+    "claim": "Palm oil expansion contributes to tropical deforestation in Southeast Asia.",
+    "chunk_text": "Satellite tracking demonstrates widespread clearing of peatland forests in Indonesia for oil palm monoculture expansion.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by satellite clearing of peatland forests."
+  },
+  {
+    "id": "v17",
+    "claim": "Subprime mortgage securitization distributed housing risk safely to all retail investors.",
+    "chunk_text": "Complex mortgage-backed security tranche structures masked underlying default risks, leading to severe contagion when housing prices fell.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "Masked risks and severe contagion contradict the claim of 'safe distribution'."
+  },
+  {
+    "id": "v18",
+    "claim": "Solid-state battery prototypes exhibit improved thermal stability compared to liquid electrolytes.",
+    "chunk_text": "Differential scanning calorimetry confirmed non-flammable solid ceramic electrolytes tolerate higher thermal thresholds than volatile organic liquids.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by thermal threshold measurements."
+  },
+  {
+    "id": "v19",
+    "claim": "Rust eliminates all runtime panic errors completely.",
+    "chunk_text": "While Rust prevents memory corruption at compile time, explicit array out-of-bounds indexing or unwrap calls can still trigger runtime panics.",
+    "ground_truth_verdict": "partially_supported",
+    "reasoning": "The claim overstates Rust's safety guarantees by asserting total elimination of runtime panics, which out-of-bounds indexing or unwrap calls still cause."
+  },
+  {
+    "id": "v20",
+    "claim": "Hyperscale AI data centers increase electrical grid demand.",
+    "chunk_text": "Projections indicate AI cluster power draw will consume up to 8% of total US electrical grid capacity by 2030.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by grid capacity power draw projections."
+  },
+  {
+    "id": "v21",
+    "claim": "Neonicotinoids are proven to be non-toxic to all insect species.",
+    "chunk_text": "Toxicological studies highlight neonicotinoid neurotoxicity to non-target pollinators including wild bumblebees.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "Contradicts source showing neurotoxicity to pollinators."
+  },
+  {
+    "id": "v22",
+    "claim": "QKD key distribution distance is unlimited over standard unamplified glass fiber.",
+    "chunk_text": "Photon attenuation in optical fiber restricts unamplified QKD transmission distance to approximately 100-200 kilometers.",
+    "ground_truth_verdict": "unsupported",
+    "reasoning": "Contradicts the 100-200km physical attenuation limit."
+  },
+  {
+    "id": "v23",
+    "claim": "Wasm runtimes reduce cold-start latency compared to traditional Docker containers.",
+    "chunk_text": "Benchmarking serverless functions demonstrated Wasm cold starts averaged 1ms versus 250ms for lightweight Linux containers.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by 1ms vs 250ms container benchmark."
+  },
+  {
+    "id": "v24",
+    "claim": "RAG completely solves long-context reasoning for multi-document synthesis.",
+    "chunk_text": "RAG effectively retrieves top-k relevant fragments, but synthesizing complex multi-document reasoning over disparate facts remains challenging.",
+    "ground_truth_verdict": "partially_supported",
+    "reasoning": "The claim claims RAG 'completely solves' long-context reasoning, whereas the source notes synthesizing complex multi-document reasoning remains challenging."
+  },
+  {
+    "id": "v25",
+    "claim": "Varroa mites contribute to honeybee colony losses.",
+    "chunk_text": "Parasitism by Varroa destructor weakens bee immune systems and transmits debilitating RNA viruses throughout hives.",
+    "ground_truth_verdict": "supported",
+    "reasoning": "Directly supported by Varroa parasite immune weakening."
+  }
+]

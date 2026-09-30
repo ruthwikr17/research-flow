@@ -1,0 +1,16 @@
+.env
+.env.local
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.next/
+node_modules/
+backend/.model-cache/
+# Runtime quota/usage state — not part of the repo
+data/usage_state.json
+# macOS
+.DS_Store
+# Local-only project context docs
+context/
+
