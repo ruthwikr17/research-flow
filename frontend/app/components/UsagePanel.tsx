@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 interface UsageData {
+  server_start_time?: string;
   search?: {
     tavily?: { used: number; limit: number };
     exa?: { used: number; limit: number };
@@ -54,10 +55,18 @@ export default function UsagePanel({ backendUrl, refreshTrigger }: UsagePanelPro
   const tavily = usage.search?.tavily || { used: 0, limit: 1000 };
   const exa = usage.search?.exa || { used: 0, limit: 1400 };
   const rateLimit = usage.rate_limit || { queries_today: 0, max_queries_per_day: 30, remaining_queries: 30 };
+  const startTimeFormatted = usage.server_start_time ? new Date(usage.server_start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
 
   return (
     <div className="card">
-      <h3 style={{ marginBottom: "1rem" }}>API Quotas & Usage Visibility</h3>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+        <h3>API Quotas & Usage Visibility</h3>
+        {startTimeFormatted && (
+          <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", backgroundColor: "rgba(255, 255, 255, 0.05)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+            Tracked since restart ({startTimeFormatted})
+          </span>
+        )}
+      </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1rem" }}>
         <div>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.25rem", fontSize: "0.875rem" }}>

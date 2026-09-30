@@ -35,10 +35,12 @@ class ResearchOrchestrator:
         import time
         start_total = time.time()
         timings: dict[str, float] = {}
+        logger.info("[pipeline] START query=%r timeout=%ss", query, self.timeout_seconds)
 
         t0 = time.time()
         plan = await asyncio.to_thread(self.planner.plan, query)
         timings["planning"] = round(time.time() - t0, 3)
+        logger.info("[pipeline] PLANNING DONE sub_questions=%d elapsed=%.2fs", len(plan.sub_questions), timings["planning"])
         self._emit(on_progress, "planning", {"sub_question_count": len(plan.sub_questions)})
         semaphore = asyncio.Semaphore(self.max_concurrent_researchers)
         completed = 0
@@ -46,6 +48,7 @@ class ResearchOrchestrator:
 
         async def research(sub_question: SubQuestion) -> MiniBrief:
             nonlocal completed
+            r_t0 = time.time()
             try:
                 async with semaphore:
                     brief = await asyncio.to_thread(
@@ -55,17 +58,20 @@ class ResearchOrchestrator:
                 logger.exception("Researcher failed for %s", sub_question.id)
                 brief = MiniBrief(sub_question_id=sub_question.id, summary=f"This angle could not be researched: {exc}", key_findings=[], sources=[])
             completed += 1
+            logger.info("[pipeline] RESEARCHER DONE sq=%s elapsed=%.2fs (%d/%d completed)", sub_question.id, time.time() - r_t0, completed, len(plan.sub_questions))
             self._emit(on_progress, "researching", {"sub_question_id": sub_question.id, "completed": completed, "remaining": len(plan.sub_questions) - completed})
             return brief
 
         t0 = time.time()
         briefs = await asyncio.gather(*(research(question) for question in plan.sub_questions))
         timings["researching"] = round(time.time() - t0, 3)
+        logger.info("[pipeline] ALL RESEARCHERS DONE elapsed=%.2fs", timings["researching"])
 
         t0 = time.time()
         self._emit(on_progress, "synthesizing", {"mini_brief_count": len(briefs)})
         report = await asyncio.to_thread(self.synthesizer.synthesize, query, briefs)
         timings["synthesizing"] = round(time.time() - t0, 3)
+        logger.info("[pipeline] SYNTHESIS DONE elapsed=%.2fs", timings["synthesizing"])
 
         if self.verifier is not None:
             t0 = time.time()
@@ -84,8 +90,10 @@ class ResearchOrchestrator:
             else:
                 report = await asyncio.to_thread(self.verifier.verify_report, report, report.synthesis_provider)
             timings["verifying"] = round(time.time() - t0, 3)
+            logger.info("[pipeline] VERIFICATION DONE claims=%d elapsed=%.2fs", claim_count, timings["verifying"])
 
         timings["total"] = round(time.time() - start_total, 3)
+        logger.info("[pipeline] COMPLETE total_elapsed=%.2fs timings=%s", timings["total"], timings)
         report.timings = timings
         self._emit(on_progress, "done", {"report": report})
         return report

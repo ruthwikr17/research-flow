@@ -1,10 +1,15 @@
+import logging
+
 from fastapi import APIRouter, Request
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["health"])
 
 
 @router.get("/health")
 def health() -> dict[str, str]:
+    logger.info("Health check ping /health")
     return {"status": "ok"}
 
 

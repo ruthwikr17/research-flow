@@ -1,8 +1,9 @@
-from __future__ import annotations
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, Request
 
 router = APIRouter(tags=["usage"])
+SERVER_START_TIME = datetime.now(timezone.utc).isoformat()
 
 
 @router.get("/usage")
@@ -25,6 +26,7 @@ def get_usage(request: Request) -> dict:
     }
 
     return {
+        "server_start_time": SERVER_START_TIME,
         "search": search_usage,
         "llm": llm_usage,
         "rate_limit": rate_limit_usage,

@@ -42,14 +42,15 @@ async def lifespan(app: FastAPI):
         rate_limiter=rate_limiter,
         max_search_attempts_per_researcher=settings.max_search_attempts_per_researcher,
         orchestrator=ResearchOrchestrator(
-            PlannerAgent(llm_router),
-        lambda: ResearcherAgent(
+            PlannerAgent(llm_router, timeout_seconds=settings.agent_timeout_seconds),
+            lambda: ResearcherAgent(
                 llm_router, search_service,
                 max_search_attempts=settings.max_search_attempts_per_researcher,
                 max_results_per_call=settings.max_results_per_search_call,
+                timeout_seconds=settings.agent_timeout_seconds,
             ),
-            SynthesizerAgent(llm_router),
-            VerifierAgent(llm_router, embed_service),
+            SynthesizerAgent(llm_router, timeout_seconds=max(90, settings.agent_timeout_seconds)),
+            VerifierAgent(llm_router, embed_service, timeout_seconds=settings.agent_timeout_seconds),
             max_concurrent_researchers=settings.max_concurrent_researchers,
             timeout_seconds=settings.pipeline_timeout_seconds,
             max_concurrent_pipelines=settings.max_concurrent_pipelines,
