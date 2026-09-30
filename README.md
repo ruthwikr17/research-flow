@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🔍 ResearchFlow
+# ResearchFlow
 
 **Multi-agent autonomous research engine with cross-model fact-checking.**
 Submit any open-ended research question — a pipeline of specialized AI agents plans sub-questions, researches them in parallel, synthesizes a structured report, and verifies every claim against the actual retrieved text, not just the model's memory.
